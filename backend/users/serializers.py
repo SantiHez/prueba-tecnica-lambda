@@ -10,17 +10,18 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(
+            username=validated_data['email'],
             email=validated_data['email'],
             password=validated_data['password']
         )
         return user
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserSerializer()  # Incluimos el UserSerializer para manejar los datos de usuario
 
     class Meta:
         model = UserProfile
-        fields = ['nombre', 'edad', 'genero', 'cedula', 'telefono']
+        fields = ['user', 'nombre', 'edad', 'genero', 'cedula', 'telefono']  # Incluimos 'user' en los campos
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')

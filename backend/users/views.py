@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 class CustomLoginView(ObtainAuthToken):
-    permission_classes = [AllowAny]  
+    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         email = request.data.get('email')
@@ -22,7 +22,7 @@ class CustomLoginView(ObtainAuthToken):
             user = User.objects.get(email=email)
             if not user.check_password(password):
                 raise AuthenticationFailed('Credenciales invalidas')
-            
+
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
